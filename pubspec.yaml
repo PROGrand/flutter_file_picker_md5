@@ -1,0 +1,40 @@
+name: file_picker_extended
+description: File Picker with streamed MD5 calculation
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ">=2.16.1 <3.0.0"
+  flutter: ">=2.5.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  http: any
+  file_picker: any
+  crypto: any
+  convert: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: file_picker_extended
+      ios:
+        default_package: file_picker_extended
+      web:
+        pluginClass: FilePickerExtendedWeb
+        fileName: web/file_picker_extended_web.dart
+      macos:
+        default_package: file_picker_extended
+      windows:
+        default_package: file_picker_extended
+      linux:
+        default_package: file_picker_extended
