@@ -12,10 +12,13 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  http: any
-  file_picker: any
-  crypto: any
-  convert: any
+  http: ^0.13.4
+  file_picker: ^4.4.0
+  crypto: ^3.0.
+  convert: ^3.0.1
+  async: ^2.8.2
+  flutter_plugin_android_lifecycle: ^2.0.5
+  plugin_platform_interface: ^2.1.2
 
 dev_dependencies:
   flutter_test:
