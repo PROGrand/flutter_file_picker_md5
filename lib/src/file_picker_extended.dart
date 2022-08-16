@@ -1,16 +1,23 @@
 import 'dart:io';
+
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
 import 'file_picker_extended_noweb.dart';
 
 class FilePickResult {
-  FilePickResult({required this.length, required this.stream, required this.md5});
+  FilePickResult({
+    required this.length,
+    required this.stream,
+    required this.md5,
+    required this.fileName,
+  });
 
   final int length;
   final Stream<List<int>> stream;
   final Digest md5;
+  final String fileName;
 }
 
 abstract class FilePickerExtended extends PlatformInterface {

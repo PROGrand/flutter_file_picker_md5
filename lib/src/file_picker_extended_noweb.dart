@@ -1,10 +1,12 @@
-import 'package:async/async.dart';
 import 'dart:io';
-import 'package:crypto/crypto.dart';
+
+import 'package:async/async.dart';
 import 'package:convert/convert.dart';
-import 'package:flutter/foundation.dart';
-import '../file_picker_extended.dart';
+import 'package:crypto/crypto.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+
+import '../file_picker_extended.dart';
 
 class FilePickerExtendedNoweb extends FilePickerExtended {
   @override
@@ -23,9 +25,11 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
 
     if (result.files.isNotEmpty) {
       return FilePickResult(
-          length: result.files.first.size,
-          stream: result.files.first.readStream!,
-          md5: await calculateMD5(File(result.files.first.path!).openRead()));
+        length: result.files.first.size,
+        stream: result.files.first.readStream!,
+        md5: await calculateMD5(File(result.files.first.path!).openRead()),
+        fileName: result.files.first.name,
+      );
     }
 
     throw Exception('No files picked or file picker was canceled');

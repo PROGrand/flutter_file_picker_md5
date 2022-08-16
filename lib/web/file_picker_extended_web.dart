@@ -4,13 +4,10 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-
-
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import '../file_picker_extended.dart';
 import '../src/crypto_util.dart';
-
 
 class FilePickerResult {
   const FilePickerResult(this.files, this.files2);
@@ -86,7 +83,6 @@ class FilePickerExtendedWeb extends FilePickerExtended {
     return target;
   }
 
-
   @override
   Future<FilePickResult?> pickFile(List<String> allowedExtensions) async {
     final result = await FilePickerExtendedWeb.platform.pickFiles(
@@ -103,9 +99,11 @@ class FilePickerExtendedWeb extends FilePickerExtended {
 
     if (result.files.isNotEmpty) {
       return FilePickResult(
-          length: result.files.first.size,
-          stream: result.files.first.readStream!,
-          md5: await MD5Util.calculate(result.files2.first));
+        length: result.files.first.size,
+        stream: result.files.first.readStream!,
+        md5: await MD5Util.calculate(result.files2.first),
+        fileName: result.files.first.name,
+      );
     }
 
     throw Exception('No files picked or file picker was canceled');
