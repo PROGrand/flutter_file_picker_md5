@@ -87,6 +87,7 @@ class FilePickerExtendedWeb extends FilePickerExtended {
   Future<FilePickResult?> pickFile({
     List<String>? allowedExtensions,
     void Function(bool done, double progress)? onProgress,
+    ValueNotifier<bool>? canceled,
   }) async {
     final result = await FilePickerExtendedWeb.platform.pickFiles(
         type: FileType.custom,
@@ -101,16 +102,24 @@ class FilePickerExtendedWeb extends FilePickerExtended {
     }
 
     if (result.files.isNotEmpty) {
-      return FilePickResult(
+      var res = FilePickResult(
         length: result.files.first.size,
         stream: result.files.first.readStream!,
-        md5: await MD5Util.calculate(result.files2.first,
-            onProgress: onProgress),
+        md5: await MD5Util.calculate(
+          result.files2.first,
+          onProgress: onProgress,
+          canceled: canceled,
+        ),
         fileName: result.files.first.name,
       );
+
+      if (!(canceled?.value ?? false || null == res.md5)) {
+        return res;
+      }
     }
 
-    throw Exception('No files picked or file picker was canceled');
+    return null;
+//    throw Exception('No files picked or file picker was canceled');
   }
 
   Future<FilePickerResult?> pickFiles({

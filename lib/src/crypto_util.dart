@@ -4,9 +4,10 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter/foundation.dart';
 
 class MD5Util {
-  static Future<crypto.Digest> calculate(
+  static Future<crypto.Digest?> calculate(
     File file, {
     void Function(bool done, double progress)? onProgress,
+    ValueNotifier<bool>? canceled,
   }) async {
     var innerSink = DigestSink();
     var outerSink = crypto.md5.startChunkedConversion(innerSink);
@@ -18,27 +19,34 @@ class MD5Util {
     var readed = 0;
 
     var size = file.size;
-    while (start < size) {
-      final end = start + bufferSize > size ? size : start + bufferSize;
-      final blob = file.slice(start, end);
-      reader.readAsArrayBuffer(blob);
-      await reader.onLoad.first;
-      outerSink.add(reader.result as List<int>);
 
-      readed += end - start;
-      start += bufferSize;
+    try {
+      while (!(canceled?.value ?? false) && start < size) {
+        final end = start + bufferSize > size ? size : start + bufferSize;
+        final blob = file.slice(start, end);
+        reader.readAsArrayBuffer(blob);
+        await reader.onLoad.first;
+        outerSink.add(reader.result as List<int>);
 
-      if (null != onProgress) {
-        onProgress(false, readed.toDouble() / size);
+        readed += end - start;
+        start += bufferSize;
+
+        if (null != onProgress) {
+          onProgress(false, readed.toDouble() / size);
+        }
       }
+
+      if (kDebugMode) {
+        final delta = DateTime.now().millisecondsSinceEpoch - startTime;
+        print('MD5 time $delta');
+      }
+    } finally {
+      outerSink.close();
     }
 
-    if (kDebugMode) {
-      final delta = DateTime.now().millisecondsSinceEpoch - startTime;
-      print('MD5 time $delta');
+    if (canceled?.value ?? false) {
+      return null;
     }
-
-    outerSink.close();
 
     if (null != onProgress) {
       onProgress(true, 1.0);

@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:crypto/crypto.dart' as crypto;
-import 'package:file_picker_extended/file_picker_extended.dart';
 import 'dart:io' as dartio;
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:http/http.dart' as http;
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
+
 import 'package:collection/collection.dart';
 import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart' as crypto;
+import 'package:file_picker_extended/file_picker_extended.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:googleapis_auth/auth_io.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       throw Exception('No files picked or file picker was canceled');
     }
 
-    uploadFile(stream: result.stream, md5: result.md5, length: result.length);
+    uploadFile(stream: result.stream, md5: result.md5!, length: result.length);
   }
 
   @override

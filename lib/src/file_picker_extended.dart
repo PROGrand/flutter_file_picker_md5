@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show ValueNotifier, kIsWeb;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'file_picker_extended_noweb.dart';
@@ -16,7 +16,7 @@ class FilePickResult {
 
   final int length;
   final Stream<List<int>> stream;
-  final Digest md5;
+  final Digest? md5;
   final String fileName;
 }
 
@@ -50,6 +50,7 @@ abstract class FilePickerExtended extends PlatformInterface {
   Future<FilePickResult?> pickFile({
     List<String>? allowedExtensions,
     void Function(bool done, double progress)? onProgress,
+    ValueNotifier<bool>? canceled,
   }) async =>
       throw UnimplementedError('pickFile() has not been implemented.');
 }

@@ -1,3 +1,6 @@
+## 0.0.5
+cancel support.
+
 ## 0.0.4
 MD5 progress callback added.
 

@@ -13,6 +13,7 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
   Future<FilePickResult?> pickFile({
     List<String>? allowedExtensions,
     void Function(bool done, double progress)? onProgress,
+    ValueNotifier<bool>? canceled,
   }) async {
     final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -27,21 +28,29 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
     }
 
     if (result.files.isNotEmpty) {
-      return FilePickResult(
+      var res = FilePickResult(
         length: result.files.first.size,
         stream: result.files.first.readStream!,
-        md5: await calculateMD5(File(result.files.first.path!).openRead(),
-            onProgress: onProgress),
+        md5: await calculateMD5(
+          File(result.files.first.path!).openRead(),
+          onProgress: onProgress,
+          canceled: canceled,
+        ),
         fileName: result.files.first.name,
       );
+
+      if (!(canceled?.value ?? false || null == res.md5)) {
+        return res;
+      }
     }
 
-    throw Exception('No files picked or file picker was canceled');
+    return null;
   }
 
-  static Future<Digest> calculateMD5(
+  static Future<Digest?> calculateMD5(
     Stream<List<int>> stream, {
     void Function(bool done, double progress)? onProgress,
+    ValueNotifier<bool>? canceled,
   }) async {
     var size = await stream.length;
 
@@ -55,11 +64,12 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
     var readed = 0;
 
     try {
-      while (true) {
+      while (!(canceled?.value ?? false)) {
         final chunk = await reader.readChunk(chunkSize);
         if (chunk.isEmpty) {
           break;
         }
+
         input.add(chunk);
 
         readed += chunk.length;
@@ -70,9 +80,12 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
       }
     } finally {
       reader.cancel();
+      input.close();
     }
 
-    input.close();
+    if (canceled?.value ?? false) {
+      return null;
+    }
 
     if (kDebugMode) {
       final delta = DateTime.now().millisecondsSinceEpoch - startTime;
