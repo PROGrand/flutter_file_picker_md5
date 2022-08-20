@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 class MD5Util {
   static Future<crypto.Digest?> calculate(
     File file, {
+    required int size,
     void Function(bool done, double progress)? onProgress,
     ValueNotifier<bool>? canceled,
   }) async {
@@ -17,8 +18,6 @@ class MD5Util {
     const bufferSize = 4096 * 64;
     var start = 0;
     var readed = 0;
-
-    var size = file.size;
 
     try {
       while (!(canceled?.value ?? false) && start < size) {

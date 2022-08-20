@@ -32,7 +32,8 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
         length: result.files.first.size,
         stream: result.files.first.readStream!,
         md5: await calculateMD5(
-          File(result.files.first.path!).openRead(),
+          stream: File(result.files.first.path!).openRead(),
+          size: result.files.first.size,
           onProgress: onProgress,
           canceled: canceled,
         ),
@@ -47,13 +48,12 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
     return null;
   }
 
-  static Future<Digest?> calculateMD5(
-    Stream<List<int>> stream, {
+  static Future<Digest?> calculateMD5({
+    required Stream<List<int>> stream,
+    required int size,
     void Function(bool done, double progress)? onProgress,
     ValueNotifier<bool>? canceled,
   }) async {
-    var size = await stream.length;
-
     final startTime = kDebugMode ? DateTime.now().millisecondsSinceEpoch : 0;
 
     final reader = ChunkedStreamReader(stream);

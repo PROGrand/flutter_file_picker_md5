@@ -107,6 +107,7 @@ class FilePickerExtendedWeb extends FilePickerExtended {
         stream: result.files.first.readStream!,
         md5: await MD5Util.calculate(
           result.files2.first,
+          size: result.files.first.size,
           onProgress: onProgress,
           canceled: canceled,
         ),
