@@ -84,7 +84,10 @@ class FilePickerExtendedWeb extends FilePickerExtended {
   }
 
   @override
-  Future<FilePickResult?> pickFile(List<String> allowedExtensions) async {
+  Future<FilePickResult?> pickFile({
+    List<String>? allowedExtensions,
+    void Function(bool done, double progress)? onProgress,
+  }) async {
     final result = await FilePickerExtendedWeb.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: allowedExtensions,
@@ -101,7 +104,8 @@ class FilePickerExtendedWeb extends FilePickerExtended {
       return FilePickResult(
         length: result.files.first.size,
         stream: result.files.first.readStream!,
-        md5: await MD5Util.calculate(result.files2.first),
+        md5: await MD5Util.calculate(result.files2.first,
+            onProgress: onProgress),
         fileName: result.files.first.name,
       );
     }

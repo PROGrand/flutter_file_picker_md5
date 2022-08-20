@@ -1,10 +1,13 @@
-import 'package:crypto/crypto.dart' as crypto;
 import 'dart:html';
 
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter/foundation.dart';
 
 class MD5Util {
-  static Future<crypto.Digest> calculate(File file) async {
+  static Future<crypto.Digest> calculate(
+    File file, {
+    void Function(bool done, double progress)? onProgress,
+  }) async {
     var innerSink = DigestSink();
     var outerSink = crypto.md5.startChunkedConversion(innerSink);
 
@@ -12,15 +15,22 @@ class MD5Util {
     final reader = FileReader();
     const bufferSize = 4096 * 64;
     var start = 0;
+    var readed = 0;
 
-    while (start < file.size) {
-      final end =
-          start + bufferSize > file.size ? file.size : start + bufferSize;
+    var size = file.size;
+    while (start < size) {
+      final end = start + bufferSize > size ? size : start + bufferSize;
       final blob = file.slice(start, end);
       reader.readAsArrayBuffer(blob);
       await reader.onLoad.first;
       outerSink.add(reader.result as List<int>);
+
+      readed += end - start;
       start += bufferSize;
+
+      if (null != onProgress) {
+        onProgress(false, readed.toDouble() / size);
+      }
     }
 
     if (kDebugMode) {
@@ -29,6 +39,10 @@ class MD5Util {
     }
 
     outerSink.close();
+
+    if (null != onProgress) {
+      onProgress(true, 1.0);
+    }
 
     return innerSink.value;
   }

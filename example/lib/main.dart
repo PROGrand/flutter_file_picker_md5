@@ -61,19 +61,24 @@ class _MyHomePageState extends State<MyHomePage> {
   http.Client? _httpClient;
 
   void _uploadFile() async {
-    final result = await FilePickerExtended.platform.pickFile([
-      'mp4',
-    ]);
+    final result = await FilePickerExtended.platform.pickFile(
+      allowedExtensions: [
+        'mp4',
+      ],
+      onProgress: (done, progress) {
+        if (kDebugMode) {
+          print(done
+              ? 'MD5 PROGRESS: DONE'
+              : 'MD5 PROGRESS: ${(progress * 100).toInt()}');
+        }
+      },
+    );
 
     if (result == null) {
       throw Exception('No files picked or file picker was canceled');
     }
 
-    uploadFile(
-      stream: result.stream,
-      md5: result.md5,
-      length: result.length
-    );
+    uploadFile(stream: result.stream, md5: result.md5, length: result.length);
   }
 
   @override
@@ -161,7 +166,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'x-goog-meta-your_metadata': 'your_metadata_value',
       'x-goog-meta-your_metadata2': 'your_metadata_value2',
     };
-
 
     Stream<List<int>> streamUpload = stream.transform(
       StreamTransformer.fromHandlers(

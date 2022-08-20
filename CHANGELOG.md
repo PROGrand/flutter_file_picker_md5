@@ -1,3 +1,6 @@
+## 0.0.4
+MD5 progress callback added.
+
 ## 0.0.3
 fileName in result.
 

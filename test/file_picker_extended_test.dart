@@ -1,15 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() {
-  });
+  setUp(() {});
 
-  tearDown(() {
-  });
+  tearDown(() {});
 
-  test('getPlatformVersion', () async {
-  });
+  test('getPlatformVersion', () async {});
 }

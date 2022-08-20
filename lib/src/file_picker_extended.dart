@@ -25,7 +25,7 @@ abstract class FilePickerExtended extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static late FilePickerExtended _instance = FilePickerExtended._setPlatform();
+  static FilePickerExtended _instance = FilePickerExtended._setPlatform();
 
   static FilePickerExtended get platform => _instance;
 
@@ -47,6 +47,9 @@ abstract class FilePickerExtended extends PlatformInterface {
   //[
   //           'mp4',
   //         ]
-  Future<FilePickResult?> pickFile(List<String> allowedExtensions) async =>
+  Future<FilePickResult?> pickFile({
+    List<String>? allowedExtensions,
+    void Function(bool done, double progress)? onProgress,
+  }) async =>
       throw UnimplementedError('pickFile() has not been implemented.');
 }
