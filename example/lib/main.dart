@@ -63,6 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _uploadFile() async {
     final result = await FilePickerExtended.platform.pickFile(
+      returnStream: true,
+      calcMD5: true,
+      returnBlob: false,
       allowedExtensions: [
         'mp4',
       ],
@@ -79,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
       throw Exception('No files picked or file picker was canceled');
     }
 
-    uploadFile(stream: result.stream, md5: result.md5!, length: result.length);
+    uploadFile(stream: result.stream!, md5: result.md5!, length: result.length);
   }
 
   @override

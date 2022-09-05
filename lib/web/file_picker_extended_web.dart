@@ -88,12 +88,15 @@ class FilePickerExtendedWeb extends FilePickerExtended {
     List<String>? allowedExtensions,
     void Function(bool done, double progress)? onProgress,
     ValueNotifier<bool>? canceled,
+    bool returnStream = true,
+    bool calcMD5 = true,
+    bool returnBlob = true,
   }) async {
     final result = await FilePickerExtendedWeb.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: allowedExtensions,
         withData: false,
-        withReadStream: true,
+        withReadStream: returnStream,
         allowCompression: false,
         allowMultiple: false);
 
@@ -104,18 +107,25 @@ class FilePickerExtendedWeb extends FilePickerExtended {
     if (result.files.isNotEmpty) {
       var res = FilePickResult(
         length: result.files.first.size,
-        stream: result.files.first.readStream!,
-        md5: await MD5Util.calculate(
-          result.files2.first,
-          size: result.files.first.size,
-          onProgress: onProgress,
-          canceled: canceled,
-        ),
+        stream: returnStream ? result.files.first.readStream! : null,
+        blob: returnBlob ? result.files2.first : null,
+        md5: calcMD5
+            ? await MD5Util.calculate(
+                result.files2.first,
+                size: result.files.first.size,
+                onProgress: onProgress,
+                canceled: canceled,
+              )
+            : null,
         fileName: result.files.first.name,
       );
 
-      if (!(canceled?.value ?? false || null == res.md5)) {
-        return res;
+      if (!(canceled?.value ?? false)) {
+        if (calcMD5 && null == res.md5) {
+          return null;
+        } else {
+          return res;
+        }
       }
     }
 

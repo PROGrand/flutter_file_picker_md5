@@ -14,12 +14,15 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
     List<String>? allowedExtensions,
     void Function(bool done, double progress)? onProgress,
     ValueNotifier<bool>? canceled,
+    bool returnStream = true,
+    bool calcMD5 = true,
+    bool returnBlob = false,
   }) async {
     final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: allowedExtensions ?? const [],
         withData: false,
-        withReadStream: true,
+        withReadStream: returnStream,
         allowCompression: false,
         allowMultiple: false);
 
@@ -30,7 +33,8 @@ class FilePickerExtendedNoweb extends FilePickerExtended {
     if (result.files.isNotEmpty) {
       var res = FilePickResult(
         length: result.files.first.size,
-        stream: result.files.first.readStream!,
+        stream: returnStream ? result.files.first.readStream! : null,
+        blob: result.files.first,
         md5: await calculateMD5(
           stream: File(result.files.first.path!).openRead(),
           size: result.files.first.size,

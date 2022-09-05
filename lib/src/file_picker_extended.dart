@@ -12,10 +12,12 @@ class FilePickResult {
     required this.stream,
     required this.md5,
     required this.fileName,
+    required this.blob,
   });
 
   final int length;
-  final Stream<List<int>> stream;
+  final Stream<List<int>>? stream;
+  dynamic blob;
   final Digest? md5;
   final String fileName;
 }
@@ -51,6 +53,9 @@ abstract class FilePickerExtended extends PlatformInterface {
     List<String>? allowedExtensions,
     void Function(bool done, double progress)? onProgress,
     ValueNotifier<bool>? canceled,
+    bool returnStream = true,
+    bool calcMD5 = true,
+    bool returnBlob = true,
   }) async =>
       throw UnimplementedError('pickFile() has not been implemented.');
 }

@@ -1,10 +1,10 @@
 name: file_picker_extended
 description: File Picker with streamed MD5 calculation
-version: 0.0.6
+version: 0.0.7
 homepage: https://github.com/PROGrand/flutter_file_picker_md5
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
   flutter: ">=2.5.0"
 
 dependencies:
