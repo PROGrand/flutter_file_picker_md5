@@ -1,3 +1,6 @@
+## 0.0.7+1
+fix freeze on web pick blob file. 
+
 ## 0.0.7
 control over stream
 control over md5

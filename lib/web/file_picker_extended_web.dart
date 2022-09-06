@@ -1,13 +1,26 @@
 import 'dart:async';
 import 'dart:html';
-import 'dart:typed_data';
 
-import 'package:file_picker/file_picker.dart';
+import 'package:file_picker_extended/src/platform_file.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import '../file_picker_extended.dart';
 import '../src/crypto_util.dart';
+
+enum FileType {
+  any,
+  media,
+  image,
+  video,
+  audio,
+  custom,
+}
+
+enum FilePickerStatus {
+  picking,
+  done,
+}
 
 class FilePickerResult {
   const FilePickerResult(this.files, this.files2);
@@ -207,7 +220,7 @@ class FilePickerExtendedWeb extends FilePickerExtended {
         if (!withData) {
           final FileReader reader = FileReader();
           reader.onLoadEnd.listen((e) {
-            addPickedFile(file, null, reader.result as String?, null);
+            addPickedFile(file, null, '', null);
           });
           reader.readAsDataUrl(file);
           continue;
