@@ -1,4 +1,4 @@
-# file_picker_extended
+# file_picker_extended_md5
 
 Flutter File Picker with streamed MD5 calculation and Google Cloud Storage upload example. 
 
