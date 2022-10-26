@@ -1,3 +1,6 @@
+## 0.0.8+1
+file_picker: ^5.2.2
+
 ## 0.0.7+1
 fix freeze on web pick blob file. 
 
