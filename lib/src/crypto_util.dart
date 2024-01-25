@@ -56,7 +56,7 @@ class MD5Util {
 }
 
 /// A sink used to get a digest value out of `Hash.startChunkedConversion`.
-class DigestSink extends Sink<crypto.Digest> {
+class DigestSink implements Sink<crypto.Digest> {
   /// The value added to the sink.
   ///
   /// A value must have been added using [add] before reading the `value`.
