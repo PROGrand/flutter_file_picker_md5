@@ -1,3 +1,7 @@
+## 1.0.1
+
+* android gradle namespace
+
 ## 1.0.0
 
 * dependencies upgraded 
