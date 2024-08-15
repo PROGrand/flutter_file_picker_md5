@@ -1,3 +1,7 @@
+## 1.0.2
+
+* file_picker: ^8.1.1
+
 ## 1.0.1
 
 * android gradle namespace
