@@ -22,7 +22,7 @@ const bucket = '<your-bucket>';
 //your service account json here
 const serviceAccountJson = '''
 {
-  "type": "service_account",
+  "type": "service_account"
 }
 ''';
 
@@ -65,9 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       returnStream: true,
       calcMD5: true,
       returnBlob: false,
-      allowedExtensions: [
-        'mp4',
-      ],
+      allowedExtensions: ['mp4', 'png', 'jpg'],
       onProgress: (done, progress) {
         if (kDebugMode) {
           print(done
@@ -104,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: const TextStyle(color: Colors.blue),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        launch(_mediaLink!);
+                        launchUrl(Uri.parse(_mediaLink!));
                       },
                   ),
               ],
