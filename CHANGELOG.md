@@ -1,3 +1,8 @@
+## 1.0.3
+
+* ios example upgraded
+* flutter: 3.27
+
 ## 1.0.2
 
 * file_picker: ^8.1.1
